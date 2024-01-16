@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Laravel\Socialite\Facades\Socialite;
 
 class loginController extends Controller
 {
@@ -42,5 +43,47 @@ class loginController extends Controller
 
         return back()->with('error','Login Failed');
 
+    }
+    public function redirectToGoogle()
+    {
+        return Socialite::driver('google')->redirect();
+    }
+
+    public function handleGoogleCallback()
+    {
+        try {
+
+           $user = Socialite::driver('google')->user();
+
+           $finduser = User::where('google_id', $user->id)->first();
+
+           if(!$finduser){
+            $saveUser = User::updateOrCreate(
+                [
+                    'google_id' => $user->getId(),
+                ],
+                [
+                    'username' => $user->getName(),
+                    'usertag' => '@' . $user->getName(),
+                    'email' => $user->getEmail(),
+                    'password' => Hash::make($user->getName() .  '@' . $user->getId()),
+                ],
+            );
+           }
+           else{
+               $saveUser =  User::where('email',$user->getEmail())->update([
+                    'google_id' => $user->getId(),
+                ]);
+
+                User::where('email',$user->getEmail())->first();
+           }
+
+           Auth::loginUsingId($saveUser->id);
+
+           return redirect()->route('home');
+
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 }

@@ -15,24 +15,8 @@ class NavigationController extends Controller
                 'icon' => 'fa-solid fa-house',
             ],
             [
-                'name' => 'Explore',
-                'url' => "#",
-            ],
-            [
-                'name' => 'Notification',
-                'url' => "#",
-            ],
-            [
-                'name' => 'Bookmarks',
-                'url' => "#",
-            ],
-            [
                 'name' => 'Profile',
-                'url' => "#",
-            ],
-            [
-                'name' => 'more',
-                'url' => "#",
+                'url' => route('profile'),
             ],
         ];
 

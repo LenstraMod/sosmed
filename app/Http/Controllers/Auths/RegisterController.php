@@ -15,7 +15,7 @@ class RegisterController extends Controller
      */
     public function ShowRegisterForm()
     {
-        
+
         return view('frontend.auths.register');
     }
 
@@ -42,14 +42,14 @@ class RegisterController extends Controller
 
         $user = User::create([
             'username' => $request->username,
+            'usertag' => '@' . $request->username,
             'email' => $request->email,
             'password' => bcrypt($request->password),
+            'photo' => 'default.png',
             'role' => 'user',
         ]);
 
-        Auth::login($user);
-
-        return redirect('/')->with('success', 'Register Success');
+        return redirect('/login')->with('success', 'Register Success');
     }
 
 }

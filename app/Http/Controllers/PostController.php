@@ -5,9 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\post;
 use App\Http\Requests\StorepostRequest;
 use App\Http\Requests\UpdatepostRequest;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      */
@@ -21,7 +27,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return view('frontend.posts.create');
     }
 
     /**
@@ -29,7 +35,10 @@ class PostController extends Controller
      */
     public function store(StorepostRequest $request)
     {
-        //
+
+        $this->authorize('create', post::class);
+
+       
     }
 
     /**

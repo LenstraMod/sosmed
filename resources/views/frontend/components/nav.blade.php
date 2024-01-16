@@ -38,17 +38,8 @@
                <li class="{{ request()->routeIs('home') ? 'active' : '' }}">
                     <a href="{{ route('home') }}"> <i class="fa-solid fa-house"></i> Home</a>
                 </li>
-                <li class="{{ request()->routeIs('explore') ? 'active' : '' }}">
-                    <a href="#"> <i class="fa-solid fa-magnifying-glass"></i> Explore</a>
-                </li>
-                <li class="{{ request()->routeIs('notification') ? 'active' : '' }}">
-                    <a href="#"> <i class="fa-solid fa-bell"></i> Notification</a>
-                </li>
-                <li class="{{ request()->routeIs('bookmarks') ? 'active' : '' }}">
-                    <a href="#"> <i class="fa-solid fa-bookmark"></i> Bookmarks</a>
-                </li>
                 <li class="{{ request()->routeIs('profile') ? 'active' : '' }}">
-                    <a href="#"> <i class="fa-solid fa-user"></i> Profile</a>
+                    <a href="{{ route('profile') }}"> <i class="fa-solid fa-user"></i> Profile</a>
                 </li>
                 <li class="{{ request()->routeIs('more') ? 'active' : '' }}">
                     <a href="#"> <i class="fa-solid fa-ellipsis-vertical"></i> More</a>

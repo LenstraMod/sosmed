@@ -30,9 +30,15 @@
                     <input type="search" placeholder="Search" class="text-white w-full rounded-lg bg-[#1E1E1E] border-0 px-4 py-2">
                 </div>
                 <div class="scroll-view text-white mt-12 scroll-smooth">
-                   @foreach($post as $post)
-                   @include('frontend.components.postCard')
-                   @endforeach
+                  @if($post -> isEmpty())
+                    <div class="no-post text-center">
+                        <p>There's No Post Currently</p>
+                    </div>
+                  @else
+                    @foreach($post as $post)
+                    @include('frontend.components.postCard')
+                    @endforeach
+                  @endif
                 </div>
             </div>
             <div class="hidden sm:block col-span-1">
@@ -44,14 +50,14 @@
                 <div class="rightbar flex flex-col pr-5 font-poppins">
                     <div class="user-profile text-white flex items-center mt-5 mb-12">
                         <div class="profile-image">
-                            <img src="https://i.pinimg.com/originals/ae/67/fe/ae67fe590aa67995dbc94c85af37d6bc.jpg" class="rounded-full w-[75px]" alt="">
+                            <img src="{{ asset('assets/images/user-images/' .  $user->photo ) }}" class="rounded-full w-[50px] mx-5" alt="">
                         </div>
                         <div class="user-detail">
                             <div class="username">
-                                <p class=" font-semibold">NanamiJustGoMalaysia</p>
+                                <p class=" font-semibold">{{ $user->username }}</p>
                             </div>
                             <div class="usertag">
-                                <p class="text-[#869099]">@nanamirevived</p>
+                                <p class="text-[#869099]">{{ $user->usertag }}</p>
                             </div>
                         </div>
                         <div class="setting mx-5">
@@ -59,7 +65,7 @@
                         </div>
                     </div>
                     <div class="post">
-                        <button class="w-full text-white bg-blue-700 p-2 mt-3 rounded-lg font-semibold hover:bg-blue-800 transition duration-150 ease-out">Post</button>
+                        <button data-modal-target="post-modal" data-modal-toggle="post-modal" class="w-full text-white bg-blue-700 p-2 mt-3 rounded-lg font-semibold hover:bg-blue-800 transition duration-150 ease-out">Post</button>
                     </div>
                     <div class="stories mt-12">
                         <div class="story-card  p-3 rounded-lg bg-[#272C3E]">
@@ -138,4 +144,5 @@
         </div>
     </div>
 </div>
+@include('frontend.posts.create')
 @endsection

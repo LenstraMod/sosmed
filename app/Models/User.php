@@ -19,9 +19,12 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'username',
+        'usertag',
         'email',
+        'photo',
         'password',
-        'role'
+        'role',
+        'google_id',
     ];
 
     /**
@@ -50,7 +53,7 @@ class User extends Authenticatable
 
     }
 
-    public function users(){
+    public function posts(){
 
         return $this->hasMany(post::class);
     }

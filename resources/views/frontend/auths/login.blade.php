@@ -48,7 +48,6 @@
         class="appearance-none bg-transparent w-full py-2 px-3 text-white mb-3 leading-tight border-b border-0 border-white focus:outline-none focus:border-0"
         id="password"
         name="password"
-        value="{{ old('password') }}"
         type="password"
         placeholder="Password"
       >
@@ -74,6 +73,7 @@
         <button
         class="bg-white hover:bg-gray-100 text-black w-full font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline flex justify-center gap-2"
         type="button"
+        onclick="window.location='{{ route('redirectToGoogle') }}'"
       >
       <img src="{{ asset('assets/icons/' .  $iconName ) }}" alt=""> Login with Google
       </button>

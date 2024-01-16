@@ -1,4 +1,5 @@
 <div class="card bg-[#272C3E] rounded-lg p-5 shadow-lg mt-5">
+   <div class="flex justify-between items-center">
     <div class="card-head flex gap-3 items-center mb-5">
         <div class="userProfile">
             <img src="{{ asset('assets/images/user-images/' . $post->user->photo) }}" class="w-[50px] rounded-full" alt="">
@@ -7,7 +8,15 @@
         <div class="line">-</div>
         <div class="usertag text-[#869099]">{{$post->user->usertag }}</div>
     </div>
-    <div class="card-image mb-3">
+   @if($post->user->id == Auth::user()->id)
+
+        <a href="/post/edit/{{ $post->id }}" class="text-[#869099]">Edit</a>
+        <a href="/post/delete/{{ $post->id }}" class="text-[#869099]">Delete</a>
+
+
+   @endif
+   </div>
+    <div class="card-image mb-3 flex justify-center">
         <img src="{{ asset('assets/images/post-images/' . $post->image) }}" class="rounded-lg" alt="">
     </div>
     <div class="users_action flex gap-5 mb-5 mx-3 text-xl">
