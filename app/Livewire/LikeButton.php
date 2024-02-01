@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\post;
+use App\Models\Like;
 
 class LikeButton extends Component
 {
@@ -31,14 +32,36 @@ class LikeButton extends Component
     }
     public function render()
     {
-        return view('livewire.like-button',[
-            'post' => post::find($this->postId)
-        ]);
+        $post = post::find($this->postId);
+
+        if($post){
+             $likeCount = Like::where('post_id', $post->id)->count();
+
+             return view('livewire.like-button', compact('likeCount'));
+        }
     }
 
     public function toggleLike(){
         $post = post::find($this->postId);
-        $post->liked = !$post->liked;
-        $post->save();
+        $like = new Like;
+
+
+        $existedLike = Like::where('post_id', $post->id)
+                            ->where('user_id', auth()->user()->id)
+                            ->first();
+
+        if($existedLike){
+            $existedLike->liked = true;
+            $existedLike->save();
+        }
+        else{
+            $getLike = $like->liked = !$like->liked;
+            $like->fill([
+                'post_id' => $post->id,
+                'user_id' => auth()->user()->id,
+                'liked' => $getLike,
+            ]);
+            $like->save();
+        }
     }
 }

@@ -108,8 +108,9 @@
         <button
         class="bg-white hover:bg-gray-100 text-black w-full font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline flex justify-center gap-2"
         type="button"
+        onclick="window.location='{{ route('redirectToGoogle') }}' "
       >
-      <img src="{{ asset('assets/icons/' .  $iconName ) }}" alt=""> Login with Google
+      <img src="{{ asset('assets/icons/' .  $iconName ) }}" alt=""> Sign up with Google
       </button>
     </div>
     <div class="register mt-2 flex justify-center">

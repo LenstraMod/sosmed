@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\post;
 use App\Models\User;
 use App\Models\Like;
+use App\Models\comment as Comment;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 
 class HomeController extends Controller
 {
@@ -15,7 +17,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $post = post::with('user')->orderBy('created_at','desc')->get();
+        $post = post::with(['user','likes','comments'=>function($query){$query->orderBy('created_at','desc');}])->orderBy('created_at','desc')->get();
         $user = Auth::user();
 
         return view('frontend.home', compact('post','user'));
@@ -86,11 +88,40 @@ class HomeController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $post = Post::where('id', $id)->first();
-        $post->update([
-            'title' => $request->title,
-            'content' => $request->content,
+
+        $request->validate([
+            'title' => 'required',
+            'content' => 'required',
+            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Add your specific image validation rules
         ]);
+
+        $post = Post::findOrFail($id);
+
+        if ($request->hasFile('image')) {
+            // Delete the previous image if it exists
+            $previousImagePath = public_path('assets/images/post-images/' . $post->image);
+            if (File::exists($previousImagePath)) {
+                File::delete($previousImagePath);
+            }
+
+            // Upload the new image
+            $imageName = 'IMG' . '.' . $request->file('image')->getClientOriginalName();
+            $request->file('image')->move(public_path('assets/images/post-images/'), $imageName);
+
+            // Update the post with the new image
+            $post->update([
+                'title' => $request->title,
+                'content' => $request->content,
+                'image' => $imageName,
+            ]);
+        } else {
+            // If no new image is provided, update other fields
+            $post->update([
+                'title' => $request->title,
+                'content' => $request->content,
+            ]);
+        }
+
         return redirect()->route('profile')->with('message', 'Post updated successfully');
     }
 

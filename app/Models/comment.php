@@ -9,7 +9,7 @@ class comment extends Model
 {
     use HasFactory;
 
-    protected $table = 'comment';
+    protected $table = 'comments';
 
     protected $fillable = [
         'user_id',
@@ -18,4 +18,16 @@ class comment extends Model
     ];
 
     protected $guarded = [];
+
+    public function getRecentComments(){
+        return $this->orderBy('created_at','desc')->take(5)->get();
+    }
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
+
+    public function post(){
+        return $this->belongsTo(post::class);
+    }
 }

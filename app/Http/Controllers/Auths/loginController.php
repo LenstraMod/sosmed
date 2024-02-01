@@ -55,9 +55,9 @@ class loginController extends Controller
 
            $user = Socialite::driver('google')->user();
 
-           $finduser = User::where('google_id', $user->id)->first();
+           $findUser = User::where('google_id', $user->id)->first();
 
-           if(!$finduser){
+           if(!$findUser){
             $saveUser = User::updateOrCreate(
                 [
                     'google_id' => $user->getId(),
@@ -66,19 +66,18 @@ class loginController extends Controller
                     'username' => $user->getName(),
                     'usertag' => '@' . $user->getName(),
                     'email' => $user->getEmail(),
+                    'photo' => $user->getAvatar(),
                     'password' => Hash::make($user->getName() .  '@' . $user->getId()),
                 ],
             );
+            $saveUser = User::where('email', $user->getEmail())->first();
+            Auth::loginUsingId($saveUser);
            }
            else{
-               $saveUser =  User::where('email',$user->getEmail())->update([
-                    'google_id' => $user->getId(),
-                ]);
-
-                User::where('email',$user->getEmail())->first();
+                Auth::login($findUser);
            }
 
-           Auth::loginUsingId($saveUser->id);
+
 
            return redirect()->route('home');
 

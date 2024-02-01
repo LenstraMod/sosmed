@@ -9,7 +9,7 @@ class like extends Model
 {
     use HasFactory;
 
-    protected $table = 'like';
+    protected $table = 'likes';
 
     protected $guarded = [];
 
@@ -27,5 +27,10 @@ class like extends Model
     public function post()
     {
         return $this->belongsTo(post::class);
+    }
+
+    public function likeable()
+    {
+        return $this->morphTo();
     }
 }

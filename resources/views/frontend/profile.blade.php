@@ -28,9 +28,13 @@
             <div class="main col-span-9  flex flex-col h-screen overflow-x-hidden overflow-y-auto p-5 font-poppins">
                 <div class="scroll-view text-white mt-12 scroll-smooth">
 
-                    <div class="header-profile flex items-center gap-12">
+                    <div class="header-profile flex items-center gap-12 mx-12">
                         <div class="profile-image flex flex-col justify-center">
+                            @if(filter_var($user->photo , FILTER_VALIDATE_URL))
+                            <img src="{{ $user->photo }}" class="rounded-full w-[200px] mx-5" alt="">
+                            @else
                             <img src="{{ asset('assets/images/user-images/' .  $user->photo ) }}" class="rounded-full w-[200px] mx-5" alt="">
+                            @endif
                             <button class="mt-9 border-2 border-blue-700 hover:bg-blue-700 duration-300 py-3 px-5 rounded-lg">Set Up Profile</button>
                         </div>
                         <div class="user-detail">
@@ -46,15 +50,19 @@
                         </div>
 
                 </div>
-                <div class="content mt-12">
+                <div class="content mt-12 p-12 w-fit">
                     <div class="post">
                         <div class="post-header">
                             <p class="text-xl font-semibold">Post</p>
                         </div>
                         <div class="post-content">
-                            @foreach($posts as $post)
-                            @include('frontend.components.postCard')
-                            @endforeach
+                            @if($posts -> isEmpty())
+                                <p class="text-white font-bold font-poppins text-md mt-5">No Post</p>
+                            @else
+                                @foreach($posts as $post)
+                                @include('frontend.components.postCard')
+                                @endforeach
+                            @endif
                         </div>
                     </div>
                 </div>

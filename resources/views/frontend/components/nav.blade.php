@@ -48,4 +48,3 @@
         </div>
     </div>
  </div>
- <a class="text-blue-400" href="{{ route('logout') }}">log out</a>

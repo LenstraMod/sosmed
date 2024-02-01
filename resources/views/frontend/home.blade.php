@@ -12,7 +12,7 @@
     }
 </style>
 
-<div class="home">
+<div class="home" >
     <div class="wrapper">
         <div class="in-home grid grid-cols-1 sm:grid-cols-12 place-content-center overflow-x-hidden">
             <div class="hidden sm:block col-span-2">
@@ -29,10 +29,10 @@
                 <div class="search mt-12">
                     <input type="search" placeholder="Search" class="text-white w-full rounded-lg bg-[#1E1E1E] border-0 px-4 py-2">
                 </div>
-                <div class="scroll-view text-white mt-12 scroll-smooth">
+                <div class="scroll-view text-white mt-12 scroll-smooth ">
                   @if($post -> isEmpty())
                     <div class="no-post text-center">
-                        <p>There's No Post Currently</p>
+                        <p>There's No Post Currently, {{ $user->username }}</p>
                     </div>
                   @else
                     @foreach($post as $post)
@@ -50,18 +50,30 @@
                 <div class="rightbar flex flex-col pr-5 font-poppins">
                     <div class="user-profile text-white flex items-center mt-5 mb-12">
                         <div class="profile-image">
-                            <img src="{{ asset('assets/images/user-images/' .  $user->photo ) }}" class="rounded-full w-[50px] mx-5" alt="">
+                            @if(filter_var($user->photo, FILTER_VALIDATE_URL))
+                                <img src="{{ $user->photo }}" class="rounded-full w-[50px] mx-5" alt="">
+                            @else
+                                <img src="{{ asset('assets/images/user-images/' .  $user->photo ) }}" class="rounded-full w-[50px] mx-5" alt="">
+                            @endif
                         </div>
                         <div class="user-detail">
                             <div class="username">
                                 <p class=" font-semibold">{{ $user->username }}</p>
                             </div>
                             <div class="usertag">
-                                <p class="text-[#869099]">{{ $user->usertag }}</p>
+                                <p class="text-[#869099] text-sm">{{ $user->usertag }}</p>
                             </div>
                         </div>
-                        <div class="setting mx-5">
+                        <div class="setting mx-5 flex gap-3">
+                            <button onclick="toggleDropdown()">
                             <i class="fa-solid fa-ellipsis-vertical text-xl"></i>
+                            </button>
+                            <div class="hidden" id="dropdownContent">
+                                <div class="flex flex-col bg-[#272C3E] p-1 rounded-md" >
+                                    <a href="#" class="text-sm p-1 hover:text-lg duration-300 ease-out"><i class="fa-solid fa-user"></i></a>
+                                    <a href="{{ route('logout') }}" class="text-sm p-1 hover:text-lg duration-300 ease-out"><i class="fa-solid fa-right-from-bracket"></i></a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="post">
@@ -145,4 +157,16 @@
     </div>
 </div>
 @include('frontend.posts.create')
+
+<script>
+    function toggleDropdown(){
+        let dropdownContent = document.getElementById('dropdownContent');
+
+        dropdownContent.style.display = (dropdownContent.style.display === 'block') ? 'none' : 'block';
+        dropdownContent.style.transitionDuration ='300ms';
+        dropdownContent.style.transitionTimingFunction = 'ease-out';
+    }
+
+
+</script>
 @endsection

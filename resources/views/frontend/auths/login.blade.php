@@ -57,6 +57,8 @@
       @error('password')
       <span class="text-red-500">{{ $message }}</span>
      @enderror
+
+     <a href="{{ route('forgetPasswordForm') }}" class="text-[#303bda] text-[12px]">Forget Password</a>
     </div>
     <div class="flex justify-center">
       <button
